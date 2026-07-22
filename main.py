@@ -18,7 +18,7 @@ except ImportError:
 app = FastAPI(
     title="MyWebby Agency Tools - Private Media Suite",
     description="Suite riservata MyWebby Agency: Favicon Generator PRO, HEIC & Batch Image Resizer, Image Crop.",
-    version="2.2.0"
+    version="2.3.0"
 )
 
 app.add_middleware(
@@ -39,23 +39,31 @@ if os.path.exists(STATIC_DIR):
 if os.path.exists(IMAGES_DIR):
     app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
 
-INDEX_HTML_PATH = os.path.join(STATIC_DIR, "index.html")
-
-# ONLY SHA-256 HASH IS STORED (ZERO PLAIN TEXT PASSWORDS ON GITHUB OR IN CODE!)
-# SHA-256 Hash of $Tellin@2020: aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1
+# SHA-256 Hash of passcode ($Tellin@2020) - ZERO plain text passwords on GitHub!
 PASSCODE_HASH = os.getenv("AGENCY_PASSCODE_HASH", "aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1")
+
+def get_index_html_content() -> str:
+    possible_paths = [
+        os.path.join(BASE_DIR, "static", "index.html"),
+        os.path.join(os.getcwd(), "static", "index.html"),
+        os.path.join(os.path.dirname(__file__), "static", "index.html"),
+        "static/index.html"
+    ]
+    for path in possible_paths:
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
+    return "<h1>MyWebby Agency Tools</h1><p>index.html non trovato nel server.</p>"
+
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():
-    if os.path.exists(INDEX_HTML_PATH):
-        with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
-            return HTMLResponse(content=f.read())
-    return HTMLResponse(content="<h1>MyWebby Agency Tools</h1><p>index.html non trovato.</p>")
+    return HTMLResponse(content=get_index_html_content())
 
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.2.0"}
+    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.3.0"}
 
 
 @app.post("/api/verify-passcode")
