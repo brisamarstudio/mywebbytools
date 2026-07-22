@@ -18,7 +18,7 @@ except ImportError:
 app = FastAPI(
     title="MyWebby Agency Tools - Private Media Suite",
     description="Suite riservata MyWebby Agency: Favicon Generator PRO, HEIC & Batch Image Resizer, Image Crop.",
-    version="2.3.0"
+    version="2.4.0"
 )
 
 app.add_middleware(
@@ -39,8 +39,17 @@ if os.path.exists(STATIC_DIR):
 if os.path.exists(IMAGES_DIR):
     app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
 
-# SHA-256 Hash of passcode ($Tellin@2020) - ZERO plain text passwords on GitHub!
-PASSCODE_HASH = os.getenv("AGENCY_PASSCODE_HASH", "aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1")
+# SHA-256 Hash of $Tellin@2020: aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1
+# SHA-256 Hash of webby2026:   f35f29d2fbdc730e620fbdd7911b333ee89600e1ce40fa188a108a7ae7ac3080
+VALID_HASHES = {
+    "aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1",
+    "f35f29d2fbdc730e620fbdd7911b333ee89600e1ce40fa188a108a7ae7ac3080"
+}
+
+# Add custom env hash if provided
+ENV_HASH = os.getenv("AGENCY_PASSCODE_HASH")
+if ENV_HASH:
+    VALID_HASHES.add(ENV_HASH.strip())
 
 def get_index_html_content() -> str:
     possible_paths = [
@@ -63,7 +72,7 @@ async def serve_index():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.3.0"}
+    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.4.0"}
 
 
 @app.post("/api/verify-passcode")
@@ -72,8 +81,9 @@ async def verify_passcode(passcode: str = Form(...)):
     Verifica sicura con HASH SHA-256 unidirezionale lato Server.
     Nessuna password in chiaro esiste nel codice o su GitHub!
     """
-    input_hash = hashlib.sha256(passcode.encode("utf-8")).hexdigest()
-    if input_hash == PASSCODE_HASH:
+    clean_pass = passcode.strip()
+    input_hash = hashlib.sha256(clean_pass.encode("utf-8")).hexdigest()
+    if input_hash in VALID_HASHES:
         session_token = hashlib.sha256((input_hash + "MYWEBBY_SALT_2026").encode("utf-8")).hexdigest()
         return JSONResponse(content={"valid": True, "token": session_token})
     return JSONResponse(status_code=401, content={"valid": False, "detail": "Passcode non valido"})
@@ -88,43 +98,36 @@ async def generate_favicons(file: UploadFile = File(...)):
         zip_buffer = io.BytesIO()
 
         with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-            # 1. favicon-16x16.png
             img16 = base_img.resize((16, 16), Image.Resampling.LANCZOS)
             b16 = io.BytesIO()
             img16.save(b16, format="PNG")
             zip_file.writestr("favicon-16x16.png", b16.getvalue())
 
-            # 2. favicon-32x32.png
             img32 = base_img.resize((32, 32), Image.Resampling.LANCZOS)
             b32 = io.BytesIO()
             img32.save(b32, format="PNG")
             zip_file.writestr("favicon-32x32.png", b32.getvalue())
 
-            # 3. apple-touch-icon.png (180x180)
             img180 = base_img.resize((180, 180), Image.Resampling.LANCZOS)
             b180 = io.BytesIO()
             img180.save(b180, format="PNG")
             zip_file.writestr("apple-touch-icon.png", b180.getvalue())
 
-            # 4. android-chrome-192x192.png
             img192 = base_img.resize((192, 192), Image.Resampling.LANCZOS)
             b192 = io.BytesIO()
             img192.save(b192, format="PNG")
             zip_file.writestr("android-chrome-192x192.png", b192.getvalue())
 
-            # 5. android-chrome-512x512.png
             img512 = base_img.resize((512, 512), Image.Resampling.LANCZOS)
             b512 = io.BytesIO()
             img512.save(b512, format="PNG")
             zip_file.writestr("android-chrome-512x512.png", b512.getvalue())
 
-            # 6. favicon.ico
             img_ico = base_img.resize((48, 48), Image.Resampling.LANCZOS)
             b_ico = io.BytesIO()
             img_ico.save(b_ico, format="ICO", sizes=[(16, 16), (32, 32), (48, 48)])
             zip_file.writestr("favicon.ico", b_ico.getvalue())
 
-            # 7. site.webmanifest
             manifest_content = """{
     "name": "MyWebby Site",
     "short_name": "WebbyApp",
