@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas Confetti for Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --mywebby-orange: #F05B28;
@@ -238,10 +240,19 @@
         .app-icon-box {
             width: 54px; height: 54px; border-radius: 13px; background: #ffffff;
             display: flex; align-items: center; justify-content: center; overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); transition: background 0.3s ease;
         }
         .app-icon-box img { width: 100%; height: 100%; object-fit: cover; }
         .app-label { font-size: 0.7rem; color: white; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+
+        .color-picker-row {
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.85rem;
+        }
+        .color-dot-btn {
+            width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+            cursor: pointer; transition: transform 0.2s ease;
+        }
+        .color-dot-btn:hover { transform: scale(1.25); }
 
         .code-box {
             background: rgba(5, 19, 21, 0.95); border: 1px solid var(--card-border);
@@ -359,10 +370,17 @@
                     <div class="mockup-card">
                         <h5><i data-lucide="smartphone"></i> Icona App iOS / Android</h5>
                         <div class="phone-screen-mockup">
-                            <div class="app-icon-box">
+                            <div class="app-icon-box" id="appIconBox">
                                 <img id="prevAppIcon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='54' height='54' viewBox='0 0 24 24' fill='%23F05B28'><circle cx='12' cy='12' r='10'/></svg>">
                             </div>
                             <span class="app-label">MyWebby</span>
+                        </div>
+                        <div class="color-picker-row">
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">Sfondo Icona:</span>
+                            <div class="color-dot-btn" style="background: #ffffff;" onclick="setAppIconBg('#ffffff')" title="Bianco"></div>
+                            <div class="color-dot-btn" style="background: #F05B28;" onclick="setAppIconBg('#F05B28')" title="MyWebby Orange"></div>
+                            <div class="color-dot-btn" style="background: #0B2B2E;" onclick="setAppIconBg('#0B2B2E')" title="Dark Teal"></div>
+                            <div class="color-dot-btn" style="background: #000000;" onclick="setAppIconBg('#000000')" title="Nero"></div>
                         </div>
                     </div>
                 </div>
@@ -447,6 +465,21 @@
             document.getElementById('passcodeOverlay').style.display = 'none';
         }
 
+        function setAppIconBg(color) {
+            document.getElementById('appIconBox').style.background = color;
+        }
+
+        function triggerCelebrationConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#F05B28', '#10B981', '#38BDF8', '#F59E0B']
+                });
+            }
+        }
+
         function togglePasscodeVisibility() {
             const input = document.getElementById('passcodeInput');
             const icon = document.getElementById('eyeIcon');
@@ -472,6 +505,7 @@
                     const data = await res.json();
                     localStorage.setItem('mywebby_session_token', data.token);
                     document.getElementById('passcodeOverlay').style.display = 'none';
+                    triggerCelebrationConfetti();
                 } else {
                     document.getElementById('passcodeError').style.display = 'block';
                 }
@@ -551,6 +585,7 @@
         function copyHtmlCode() {
             const codeText = `<link rel="icon" type="image/x-icon" href="/favicon.ico">\n<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">\n<link rel="manifest" href="/site.webmanifest">`;
             navigator.clipboard.writeText(codeText);
+            triggerCelebrationConfetti();
             alert('Codice HTML copiato negli appunti!');
         }
 
@@ -569,6 +604,7 @@
                 document.getElementById('downloadLink').download = 'favicon_pack.zip';
                 document.getElementById('resultMessage').textContent = 'Pacchetto completo (ICO, PNG 16x16, 32x32, Apple 180x180, Manifest) pronto!';
                 document.getElementById('resultBox').classList.add('active');
+                triggerCelebrationConfetti();
             } catch (err) {
                 alert('Errore: ' + err.message);
             } finally {
@@ -594,6 +630,7 @@
                 document.getElementById('downloadLink').download = 'immagini_ottimizzate.zip';
                 document.getElementById('resultMessage').textContent = `Ottimizzate ${selectedFiles.length} immagini in formato ${document.getElementById('resizeFormat').value.toUpperCase()}!`;
                 document.getElementById('resultBox').classList.add('active');
+                triggerCelebrationConfetti();
             } catch (err) {
                 alert('Errore: ' + err.message);
             } finally {
