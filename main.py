@@ -10,6 +10,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 
 try:
+    import bcrypt
+except ImportError:
+    bcrypt = None
+
+try:
     import pillow_heif
     pillow_heif.register_heif_opener()
 except ImportError:
@@ -18,7 +23,7 @@ except ImportError:
 app = FastAPI(
     title="MyWebby Agency Tools - Private Media Suite",
     description="Suite riservata MyWebby Agency: Favicon Generator PRO, HEIC & Batch Image Resizer, Image Crop.",
-    version="2.4.0"
+    version="2.6.0"
 )
 
 app.add_middleware(
@@ -39,14 +44,15 @@ if os.path.exists(STATIC_DIR):
 if os.path.exists(IMAGES_DIR):
     app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
 
-# SHA-256 Hash of $Tellin@2020: aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1
-# SHA-256 Hash of webby2026:   f35f29d2fbdc730e620fbdd7911b333ee89600e1ce40fa188a108a7ae7ac3080
+# bcrypt Hash provided by Agency: $2a$12$0hMlk16uCrEAJPkssTnE/.gq7ldrDju/GSFQtNASOHlEPJYVvBFOy
+BCRYPT_HASH = "$2a$12$0hMlk16uCrEAJPkssTnE/.gq7ldrDju/GSFQtNASOHlEPJYVvBFOy"
+
+# SHA-256 Hashes for fallback
 VALID_HASHES = {
     "aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1",
     "f35f29d2fbdc730e620fbdd7911b333ee89600e1ce40fa188a108a7ae7ac3080"
 }
 
-# Add custom env hash if provided
 ENV_HASH = os.getenv("AGENCY_PASSCODE_HASH")
 if ENV_HASH:
     VALID_HASHES.add(ENV_HASH.strip())
@@ -67,25 +73,42 @@ def get_index_html_content() -> str:
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():
-    return HTMLResponse(content=get_index_html_content())
+    response = HTMLResponse(content=get_index_html_content())
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.4.0"}
+    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.6.0"}
 
 
 @app.post("/api/verify-passcode")
 async def verify_passcode(passcode: str = Form(...)):
     """
-    Verifica sicura con HASH SHA-256 unidirezionale lato Server.
+    Verifica sicura con bcrypt HASH ($2a$12$0hMlk16uCrEAJPkssTnE/.gq7ldrDju/GSFQtNASOHlEPJYVvBFOy)
+    e fallback SHA-256 unidirezionale lato Server.
     Nessuna password in chiaro esiste nel codice o su GitHub!
     """
     clean_pass = passcode.strip()
-    input_hash = hashlib.sha256(clean_pass.encode("utf-8")).hexdigest()
-    if input_hash in VALID_HASHES:
-        session_token = hashlib.sha256((input_hash + "MYWEBBY_SALT_2026").encode("utf-8")).hexdigest()
+    
+    # 1. Check bcrypt hash
+    if bcrypt:
+        try:
+            if bcrypt.checkpw(clean_pass.encode("utf-8"), BCRYPT_HASH.encode("utf-8")):
+                session_token = hashlib.sha256((clean_pass + "MYWEBBY_SALT_2026").encode("utf-8")).hexdigest()
+                return JSONResponse(content={"valid": True, "token": session_token})
+        except Exception:
+            pass
+
+    # 2. Check SHA-256 fallback
+    input_hash_sha = hashlib.sha256(clean_pass.encode("utf-8")).hexdigest()
+    if input_hash_sha in VALID_HASHES:
+        session_token = hashlib.sha256((input_hash_sha + "MYWEBBY_SALT_2026").encode("utf-8")).hexdigest()
         return JSONResponse(content={"valid": True, "token": session_token})
+
     return JSONResponse(status_code=401, content={"valid": False, "detail": "Passcode non valido"})
 
 
