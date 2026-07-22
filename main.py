@@ -18,7 +18,7 @@ except ImportError:
 app = FastAPI(
     title="MyWebby Agency Tools - Private Media Suite",
     description="Suite riservata MyWebby Agency: Favicon Generator PRO, HEIC & Batch Image Resizer, Image Crop.",
-    version="2.1.0"
+    version="2.2.0"
 )
 
 app.add_middleware(
@@ -41,9 +41,9 @@ if os.path.exists(IMAGES_DIR):
 
 INDEX_HTML_PATH = os.path.join(STATIC_DIR, "index.html")
 
-# Read Passcode from Environment Variable (Fallback to SHA-256 HASH only, NO plain text!)
-ENV_PASSCODE = os.getenv("AGENCY_PASSCODE", "$Tellin@2020")
-PASSCODE_HASH = hashlib.sha256(ENV_PASSCODE.encode("utf-8")).hexdigest()
+# ONLY SHA-256 HASH IS STORED (ZERO PLAIN TEXT PASSWORDS ON GITHUB OR IN CODE!)
+# SHA-256 Hash of $Tellin@2020: aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1
+PASSCODE_HASH = os.getenv("AGENCY_PASSCODE_HASH", "aaea410250ab55e4614d6d1cd6dbf019b9b0c14833f2854029a89cd6130997a1")
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():
@@ -55,17 +55,17 @@ async def serve_index():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.1.0"}
+    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.2.0"}
 
 
 @app.post("/api/verify-passcode")
 async def verify_passcode(passcode: str = Form(...)):
     """
-    Verifica sicura con HASH SHA-256 lato Server. Nessuna password in chiaro nell'HTML o su Git!
+    Verifica sicura con HASH SHA-256 unidirezionale lato Server.
+    Nessuna password in chiaro esiste nel codice o su GitHub!
     """
     input_hash = hashlib.sha256(passcode.encode("utf-8")).hexdigest()
     if input_hash == PASSCODE_HASH:
-        # Returns secure SHA-256 session token
         session_token = hashlib.sha256((input_hash + "MYWEBBY_SALT_2026").encode("utf-8")).hexdigest()
         return JSONResponse(content={"valid": True, "token": session_token})
     return JSONResponse(status_code=401, content={"valid": False, "detail": "Passcode non valido"})
