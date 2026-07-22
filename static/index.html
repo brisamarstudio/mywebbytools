@@ -369,20 +369,28 @@
         document.getElementById('currentYear').textContent = new Date().getFullYear();
         let selectedFiles = [];
         let currentTool = 'favicon';
-        const DEFAULT_PASSCODE = '@2020';
 
-        // Check Local Storage Passcode
-        if (localStorage.getItem('mywebby_passcode') === DEFAULT_PASSCODE) {
+        // Check Session Token on Load (Nessuna password salvata in chiaro nell'HTML!)
+        if (localStorage.getItem('mywebby_session_token')) {
             document.getElementById('passcodeOverlay').style.display = 'none';
         }
 
-        function checkPasscode(e) {
+        async function checkPasscode(e) {
             e.preventDefault();
-            const input = document.getElementById('passcodeInput').value;
-            if (input === DEFAULT_PASSCODE || input === 'MyWebby2026') {
-                localStorage.setItem('mywebby_passcode', DEFAULT_PASSCODE);
-                document.getElementById('passcodeOverlay').style.display = 'none';
-            } else {
+            const inputPass = document.getElementById('passcodeInput').value;
+            const formData = new FormData();
+            formData.append('passcode', inputPass);
+
+            try {
+                const res = await fetch('/api/verify-passcode', { method: 'POST', body: formData });
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem('mywebby_session_token', data.token);
+                    document.getElementById('passcodeOverlay').style.display = 'none';
+                } else {
+                    document.getElementById('passcodeError').style.display = 'block';
+                }
+            } catch (err) {
                 document.getElementById('passcodeError').style.display = 'block';
             }
         }

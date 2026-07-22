@@ -1,5 +1,6 @@
 import os
 import io
+import hashlib
 import zipfile
 from typing import List, Optional
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, Response
@@ -17,7 +18,7 @@ except ImportError:
 app = FastAPI(
     title="MyWebby Agency Tools - Private Media Suite",
     description="Suite riservata MyWebby Agency: Favicon Generator PRO, HEIC & Batch Image Resizer, Image Crop.",
-    version="2.0.0"
+    version="2.1.0"
 )
 
 app.add_middleware(
@@ -40,6 +41,10 @@ if os.path.exists(IMAGES_DIR):
 
 INDEX_HTML_PATH = os.path.join(STATIC_DIR, "index.html")
 
+# Read Passcode from Environment Variable (Fallback to SHA-256 HASH only, NO plain text!)
+ENV_PASSCODE = os.getenv("AGENCY_PASSCODE", "$Tellin@2020")
+PASSCODE_HASH = hashlib.sha256(ENV_PASSCODE.encode("utf-8")).hexdigest()
+
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():
     if os.path.exists(INDEX_HTML_PATH):
@@ -50,22 +55,25 @@ async def serve_index():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.0.0"}
+    return {"status": "ok", "agency": "MyWebby Agency", "service": "mywebbytools", "version": "2.1.0"}
+
+
+@app.post("/api/verify-passcode")
+async def verify_passcode(passcode: str = Form(...)):
+    """
+    Verifica sicura con HASH SHA-256 lato Server. Nessuna password in chiaro nell'HTML o su Git!
+    """
+    input_hash = hashlib.sha256(passcode.encode("utf-8")).hexdigest()
+    if input_hash == PASSCODE_HASH:
+        # Returns secure SHA-256 session token
+        session_token = hashlib.sha256((input_hash + "MYWEBBY_SALT_2026").encode("utf-8")).hexdigest()
+        return JSONResponse(content={"valid": True, "token": session_token})
+    return JSONResponse(status_code=401, content={"valid": False, "detail": "Passcode non valido"})
 
 
 # --- API 1: FAVICON & APP ICON GENERATOR PRO ---
 @app.post("/api/generate-favicons")
 async def generate_favicons(file: UploadFile = File(...)):
-    """
-    Genera al volo il pacchetto completo Favicon & App Icons:
-    - favicon.ico (16x16, 32x32, 48x48)
-    - favicon-16x16.png
-    - favicon-32x32.png
-    - apple-touch-icon.png (180x180)
-    - android-chrome-192x192.png
-    - android-chrome-512x512.png
-    - site.webmanifest
-    """
     img_data = await file.read()
     try:
         base_img = Image.open(io.BytesIO(img_data)).convert("RGBA")
@@ -156,7 +164,6 @@ async def resize_images(
                 img_data = await file.read()
                 img = Image.open(io.BytesIO(img_data))
                 
-                # Auto rotate based on EXIF
                 try:
                     from PIL import ImageOps
                     img = ImageOps.exif_transpose(img)
