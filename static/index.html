@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyWebby Agency Tools - Private Media Suite</title>
+    <meta name="description" content="Suite riservata MyWebby Agency per Favicon Generator PRO e Ridimensionamento Immagini WebP.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --mywebby-orange: #F05B28;
+            --mywebby-orange-hover: #D94A1B;
+            --mywebby-orange-glow: rgba(240, 91, 40, 0.25);
+            --mywebby-teal-dark: #0B2B2E;
+            --mywebby-teal-card: #103539;
+            --bg-dark: #061517;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --accent-emerald: #10B981;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(240, 91, 40, 0.12) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(11, 43, 46, 0.4) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(16, 53, 57, 0.2) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* VIP PASSCODE GATEKEEPER OVERLAY */
+        #passcodeOverlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(6, 21, 23, 0.96);
+            backdrop-filter: blur(25px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .passcode-card {
+            background: var(--mywebby-teal-card);
+            border: 1px solid rgba(240, 91, 40, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        header {
+            border-bottom: 1px solid var(--card-border);
+            backdrop-filter: blur(16px);
+            background: rgba(6, 21, 23, 0.85);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+        .brand-logo img { height: 42px; width: auto; object-fit: contain; }
+
+        .brand-subtitle {
+            color: var(--mywebby-orange); font-weight: 600; font-size: 0.85rem;
+            background: rgba(240, 91, 40, 0.1); padding: 0.25rem 0.65rem;
+            border-radius: 6px; border: 1px solid rgba(240, 91, 40, 0.2);
+        }
+
+        .badge-render {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34D399; padding: 0.3rem 0.85rem; border-radius: 9999px;
+            font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.45rem;
+        }
+        .badge-pulse { width: 8px; height: 8px; background-color: #10B981; border-radius: 50%; box-shadow: 0 0 8px #10B981; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); } 70% { transform: scale(1); } 100% { transform: scale(0.95); } }
+
+        main { flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+        .hero { text-align: center; margin-bottom: 2.5rem; }
+        .hero h1 { font-family: 'Outfit', sans-serif; font-size: 2.6rem; font-weight: 700; margin-bottom: 0.75rem; color: #FFFFFF; }
+        .hero p { color: var(--text-muted); font-size: 1.05rem; max-width: 680px; margin: 0 auto; }
+
+        .tabs-container { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border);
+            color: var(--text-muted); padding: 0.75rem 1.25rem; border-radius: 12px;
+            font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: all 0.25s ease;
+            display: flex; align-items: center; gap: 0.55rem;
+        }
+        .tab-btn i { width: 18px; height: 18px; }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.07); color: var(--text-main); }
+        .tab-btn.active {
+            background: rgba(240, 91, 40, 0.15); border-color: var(--mywebby-orange);
+            color: white; box-shadow: 0 4px 20px var(--mywebby-orange-glow);
+        }
+
+        .workspace-card {
+            background: var(--mywebby-teal-card); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px; backdrop-filter: blur(20px); padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); margin-bottom: 3rem;
+        }
+
+        .dropzone {
+            border: 2px dashed rgba(240, 91, 40, 0.35); border-radius: 16px;
+            padding: 3.5rem 2rem; text-align: center; cursor: pointer;
+            transition: all 0.3s ease; background: rgba(240, 91, 40, 0.03); position: relative;
+        }
+        .dropzone:hover, .dropzone.dragover { border-color: var(--mywebby-orange); background: rgba(240, 91, 40, 0.08); transform: translateY(-2px); }
+        .dropzone-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 64px; height: 64px; background: rgba(240, 91, 40, 0.12);
+            color: var(--mywebby-orange); border-radius: 50%; margin-bottom: 1rem;
+        }
+        .dropzone-icon i { width: 32px; height: 32px; }
+        .file-input { display: none; }
+
+        .tool-panel { display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border); }
+        .tool-panel.active { display: block; animation: fadeIn 0.3s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: #D1D5DB; }
+        .form-control {
+            width: 100%; padding: 0.75rem 1rem; background: rgba(6, 21, 23, 0.6);
+            border: 1px solid var(--card-border); border-radius: 10px; color: white;
+            font-size: 0.95rem; outline: none; transition: border-color 0.2s ease;
+        }
+        .form-control:focus { border-color: var(--mywebby-orange); }
+
+        .btn-action {
+            width: 100%; padding: 1rem; background: var(--mywebby-orange);
+            border: none; border-radius: 12px; color: white; font-weight: 700;
+            font-size: 1.05rem; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--mywebby-orange-glow);
+            display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+        }
+        .btn-action i { width: 20px; height: 20px; }
+        .btn-action:hover { background: var(--mywebby-orange-hover); transform: translateY(-2px); box-shadow: 0 6px 25px var(--mywebby-orange-glow); }
+        .btn-action:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* LIVE MOCKUPS STYLING */
+        .mockups-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem; margin-top: 1.5rem; margin-bottom: 1.5rem;
+        }
+        .mockup-card {
+            background: rgba(6, 21, 23, 0.6); border: 1px solid var(--card-border);
+            border-radius: 14px; padding: 1.25rem; text-align: center;
+        }
+        .mockup-card h5 { font-size: 0.95rem; color: #D1D5DB; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+        .browser-tab-preview {
+            background: #1e293b; border-radius: 8px 8px 0 0; padding: 0.5rem 0.85rem;
+            display: flex; align-items: center; gap: 0.5rem; max-width: 220px; margin: 0 auto;
+        }
+        .browser-tab-preview img { width: 18px; height: 18px; border-radius: 3px; object-fit: contain; }
+        .browser-tab-preview span { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+        .phone-icon-preview {
+            width: 64px; height: 64px; border-radius: 14px; background: #0284c7;
+            margin: 0 auto; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        .phone-icon-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+        .code-box {
+            background: rgba(6, 21, 23, 0.9); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 1rem; font-family: monospace; font-size: 0.82rem;
+            color: #38bdf8; overflow-x: auto; text-align: left; position: relative;
+        }
+        .btn-copy {
+            position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(240, 91, 40, 0.2);
+            border: 1px solid var(--mywebby-orange); color: white; padding: 0.3rem 0.6rem;
+            border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600;
+        }
+
+        .result-box { display: none; margin-top: 1.5rem; padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; text-align: center; }
+        .result-box.active { display: block; animation: fadeIn 0.3s ease forwards; }
+
+        footer { border-top: 1px solid var(--card-border); text-align: center; padding: 1.75rem 1.5rem; color: var(--text-muted); font-size: 0.88rem; background: rgba(6, 21, 23, 0.9); }
+    </style>
+</head>
+<body>
+
+    <!-- VIP GATEKEEPER PASSCODE OVERLAY -->
+    <div id="passcodeOverlay">
+        <div class="passcode-card">
+            <div style="background: rgba(240, 91, 40, 0.15); width: 64px; height: 64px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: var(--mywebby-orange);">
+                <i data-lucide="lock" style="width: 32px; height: 32px;"></i>
+            </div>
+            <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 0.5rem;">Area Riservata Agency</h2>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">Inserisci il Passcode MyWebby per accedere alla suite privata.</p>
+            <form onsubmit="checkPasscode(event)">
+                <input type="password" id="passcodeInput" class="form-control" placeholder="Inserisci Passcode..." style="text-align: center; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 1rem;" required>
+                <button type="submit" class="btn-action">
+                    <i data-lucide="key-round"></i> Sblocca Suite Riservata
+                </button>
+            </form>
+            <p id="passcodeError" style="color: #EF4444; font-size: 0.85rem; margin-top: 0.75rem; display: none;">Passcode errato. Riprova!</p>
+        </div>
+    </div>
+
+    <header>
+        <div class="navbar">
+            <a href="https://mywebby.it" target="_blank" class="brand-logo">
+                <img src="data:image/png;base64,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" alt="MyWebby Agency" style="height: 42px; width: auto; object-fit: contain;" />
+                <span class="brand-subtitle">Agency Media Suite</span>
+            </a>
+            <div class="badge-render">
+                <div class="badge-pulse"></div>
+                Area Riservata MyWebby
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Suite Riservata Strumenti Media & Favicon</h1>
+            <p>Genera pacchetti Favicon PRO con anteprime live, converti immagini iPhone HEIC in WebP e ottimizza le risorse dei tuoi siti.</p>
+        </section>
+
+        <!-- Tool Selection Tabs -->
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTool('favicon')">
+                <i data-lucide="sparkles"></i> Favicon & App Icon Generator PRO
+            </button>
+            <button class="tab-btn" onclick="switchTool('resizer')">
+                <i data-lucide="image"></i> Batch Resizer & Convertitore HEIC -> WebP
+            </button>
+        </div>
+
+        <div class="workspace-card">
+            <!-- Drag & Drop Zone -->
+            <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                <div class="dropzone-icon">
+                    <i data-lucide="upload-cloud"></i>
+                </div>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;" id="dropzoneTitle">Trascina qui il logo o l'immagine aziendale</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">oppure clicca per selezionare dal computer</p>
+                <input type="file" id="fileInput" class="file-input" accept="image/*,.heic" multiple onchange="handleFileSelect(event)">
+            </div>
+
+            <!-- Selected Files List -->
+            <div class="file-list" id="fileList" style="margin-top: 1rem;"></div>
+
+            <!-- 1. FAVICON GENERATOR PANEL -->
+            <div class="tool-panel active" id="panel-favicon">
+                <div style="background: rgba(240, 91, 40, 0.08); border: 1px solid rgba(240, 91, 40, 0.25); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
+                    <h4 style="font-size: 1rem; color: #FFFFFF; font-weight: 700; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i data-lucide="eye" style="color: var(--mywebby-orange); width: 20px; height: 20px;"></i> Anteprima Live Mockup su Dispositivi
+                    </h4>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">
+                        Carica il tuo logo e osserva in tempo reale come apparirà sul browser e sulle schermate home di iPhone e Android!
+                    </p>
+                </div>
+
+                <!-- LIVE MOCKUPS GRID -->
+                <div class="mockups-grid">
+                    <div class="mockup-card">
+                        <h5><i data-lucide="globe"></i> Scheda Browser Chrome</h5>
+                        <div class="browser-tab-preview">
+                            <img id="prevFavicon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='%23F05B28'><circle cx='12' cy='12' r='10'/></svg>">
+                            <span>Sito Cliente - MyWebby</span>
+                        </div>
+                    </div>
+                    <div class="mockup-card">
+                        <h5><i data-lucide="smartphone"></i> Icona App iOS / Android</h5>
+                        <div class="phone-icon-preview">
+                            <img id="prevAppIcon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%23F05B28'><circle cx='12' cy='12' r='10'/></svg>">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HTML CODE COPY BOX -->
+                <div class="form-group">
+                    <label class="form-label">Codice HTML pronto da incollare nel &lt;head&gt; del sito:</label>
+                    <div class="code-box" id="htmlCodeBox">
+                        <button class="btn-copy" onclick="copyHtmlCode()"><i data-lucide="copy"></i> Copia Codice</button>
+                        &lt;link rel="icon" type="image/x-icon" href="/favicon.ico"&gt;<br>
+                        &lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;<br>
+                        &lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;<br>
+                        &lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"&gt;<br>
+                        &lt;link rel="manifest" href="/site.webmanifest"&gt;
+                    </div>
+                </div>
+
+                <button class="btn-action" id="btn-favicon" onclick="executeFavicon()" disabled>
+                    <div class="spinner" id="spinner-favicon"></div>
+                    <i data-lucide="download"></i> Scarica Pacchetto Favicon Completo (.ZIP)
+                </button>
+            </div>
+
+            <!-- 2. IMAGE RESIZER & HEIC CONVERTER PANEL -->
+            <div class="tool-panel" id="panel-resizer">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;" class="form-group">
+                    <div>
+                        <label class="form-label">Larghezza Max (px):</label>
+                        <select id="resizeWidth" class="form-control">
+                            <option value="1920">1920px (Full HD Web)</option>
+                            <option value="1200" selected>1200px (Laptop / Content)</option>
+                            <option value="800">800px (Mobile / Card)</option>
+                            <option value="500">500px (Thumbnail)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Formato Output:</label>
+                        <select id="resizeFormat" class="form-control">
+                            <option value="webp" selected>WebP (Leggerissimo)</option>
+                            <option value="jpg">JPG Alta Qualità</option>
+                            <option value="png">PNG Senza Perdita</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Qualità Compressione:</label>
+                        <select id="resizeQuality" class="form-control">
+                            <option value="80" selected>80% (Consigliata)</option>
+                            <option value="90">90% (Alta)</option>
+                            <option value="65">65% (Ultra Leggera)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-action" id="btn-resizer" onclick="executeResizer()" disabled>
+                    <div class="spinner" id="spinner-resizer"></div>
+                    <i data-lucide="zap"></i> Ottimizza e Converti Immagini in ZIP Ora
+                </button>
+            </div>
+
+            <!-- RESULT BOX -->
+            <div class="result-box" id="resultBox">
+                <i data-lucide="check-circle" style="width: 48px; height: 48px; color: #10B981; margin-bottom: 0.5rem;"></i>
+                <h3 style="font-size: 1.25rem;">Pacchetto Pronto per il Download!</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;" id="resultMessage"></p>
+                <a href="#" id="downloadLink" class="btn-download" style="background: #10B981; color: white; padding: 0.85rem 1.75rem; border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem;" download>
+                    <i data-lucide="download"></i> Scarica Archivio ZIP
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Progetto Riservato © <span id="currentYear"></span> <strong>MyWebby Agency</strong>. P.IVA 02369290180. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        let selectedFiles = [];
+        let currentTool = 'favicon';
+        const DEFAULT_PASSCODE = 'webby2026';
+
+        // Check Local Storage Passcode
+        if (localStorage.getItem('mywebby_passcode') === DEFAULT_PASSCODE) {
+            document.getElementById('passcodeOverlay').style.display = 'none';
+        }
+
+        function checkPasscode(e) {
+            e.preventDefault();
+            const input = document.getElementById('passcodeInput').value;
+            if (input === DEFAULT_PASSCODE || input === 'MyWebby2026') {
+                localStorage.setItem('mywebby_passcode', DEFAULT_PASSCODE);
+                document.getElementById('passcodeOverlay').style.display = 'none';
+            } else {
+                document.getElementById('passcodeError').style.display = 'block';
+            }
+        }
+
+        const dropzone = document.getElementById('dropzone');
+        ['dragenter', 'dragover'].forEach(eName => dropzone.addEventListener(eName, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); }, false));
+        ['dragleave', 'drop'].forEach(eName => dropzone.addEventListener(eName, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); }, false));
+        dropzone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
+
+        function handleFileSelect(e) { handleFiles(e.target.files); }
+
+        function handleFiles(files) {
+            for (let i = 0; i < files.length; i++) {
+                selectedFiles.push(files[i]);
+            }
+            if (selectedFiles.length > 0 && selectedFiles[0].type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('prevFavicon').src = e.target.result;
+                    document.getElementById('prevAppIcon').src = e.target.result;
+                };
+                reader.readAsDataURL(selectedFiles[0]);
+            }
+            renderFileList();
+            updateButtonStates();
+        }
+
+        function renderFileList() {
+            const listEl = document.getElementById('fileList');
+            listEl.innerHTML = '';
+            selectedFiles.forEach((file, idx) => {
+                const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+                listEl.innerHTML += `
+                    <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(6, 21, 23, 0.5); border: 1px solid var(--card-border); padding: 0.75rem 1rem; border-radius: 10px;">
+                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                            <i data-lucide="image" style="color: var(--mywebby-orange); width: 20px; height: 20px;"></i>
+                            <span style="font-weight: 600; font-size: 0.9rem;">${file.name} (${sizeMb} MB)</span>
+                        </div>
+                        <button style="background: transparent; border: none; color: #EF4444; cursor: pointer;" onclick="removeFile(${idx})"><i data-lucide="trash-2"></i></button>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            renderFileList();
+            updateButtonStates();
+        }
+
+        function switchTool(tool) {
+            currentTool = tool;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tool-panel').forEach(panel => panel.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(`panel-${tool}`).classList.add('active');
+            document.getElementById('resultBox').classList.remove('active');
+            updateButtonStates();
+        }
+
+        function updateButtonStates() {
+            const hasFiles = selectedFiles.length > 0;
+            document.getElementById('btn-favicon').disabled = !hasFiles;
+            document.getElementById('btn-resizer').disabled = !hasFiles;
+        }
+
+        function showLoading(tool, isLoading) {
+            const btn = document.getElementById(`btn-${tool}`);
+            const spinner = document.getElementById(`spinner-${tool}`);
+            btn.disabled = isLoading;
+            spinner.style.display = isLoading ? 'inline-block' : 'none';
+        }
+
+        function copyHtmlCode() {
+            const codeText = `<link rel="icon" type="image/x-icon" href="/favicon.ico">\n<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">\n<link rel="manifest" href="/site.webmanifest">`;
+            navigator.clipboard.writeText(codeText);
+            alert('Codice HTML copiato negli appunti!');
+        }
+
+        async function executeFavicon() {
+            if (selectedFiles.length === 0) return;
+            showLoading('favicon', true);
+            const formData = new FormData();
+            formData.append('file', selectedFiles[0]);
+
+            try {
+                const res = await fetch('/api/generate-favicons', { method: 'POST', body: formData });
+                if (!res.ok) throw new Error('Errore durante generazione favicon');
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                document.getElementById('downloadLink').href = url;
+                document.getElementById('downloadLink').download = 'favicon_pack.zip';
+                document.getElementById('resultMessage').textContent = 'Pacchetto completo (ICO, PNG 16x16, 32x32, Apple 180x180, Manifest) pronto!';
+                document.getElementById('resultBox').classList.add('active');
+            } catch (err) {
+                alert('Errore: ' + err.message);
+            } finally {
+                showLoading('favicon', false);
+            }
+        }
+
+        async function executeResizer() {
+            if (selectedFiles.length === 0) return;
+            showLoading('resizer', true);
+            const formData = new FormData();
+            selectedFiles.forEach(f => formData.append('files', f));
+            formData.append('max_width', document.getElementById('resizeWidth').value);
+            formData.append('output_format', document.getElementById('resizeFormat').value);
+            formData.append('quality', document.getElementById('resizeQuality').value);
+
+            try {
+                const res = await fetch('/api/resize-images', { method: 'POST', body: formData });
+                if (!res.ok) throw new Error('Errore durante ottimizzazione');
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                document.getElementById('downloadLink').href = url;
+                document.getElementById('downloadLink').download = 'immagini_ottimizzate.zip';
+                document.getElementById('resultMessage').textContent = `Ottimizzate ${selectedFiles.length} immagini in formato ${document.getElementById('resizeFormat').value.toUpperCase()}!`;
+                document.getElementById('resultBox').classList.add('active');
+            } catch (err) {
+                alert('Errore: ' + err.message);
+            } finally {
+                showLoading('resizer', false);
+            }
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
