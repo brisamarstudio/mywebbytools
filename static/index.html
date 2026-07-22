@@ -15,11 +15,11 @@
         :root {
             --mywebby-orange: #F05B28;
             --mywebby-orange-hover: #D94A1B;
-            --mywebby-orange-glow: rgba(240, 91, 40, 0.25);
+            --mywebby-orange-glow: rgba(240, 91, 40, 0.35);
             --mywebby-teal-dark: #0B2B2E;
-            --mywebby-teal-card: #103539;
-            --bg-dark: #061517;
-            --card-border: rgba(255, 255, 255, 0.08);
+            --mywebby-teal-card: #0F3337;
+            --bg-dark: #051315;
+            --card-border: rgba(255, 255, 255, 0.1);
             --text-main: #F3F4F6;
             --text-muted: #9CA3AF;
             --accent-emerald: #10B981;
@@ -30,9 +30,9 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(at 10% 10%, rgba(240, 91, 40, 0.12) 0px, transparent 50%),
-                radial-gradient(at 90% 90%, rgba(11, 43, 46, 0.4) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(16, 53, 57, 0.2) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(240, 91, 40, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(15, 51, 55, 0.6) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(5, 19, 21, 0.8) 0px, transparent 100%);
             background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
@@ -44,7 +44,7 @@
         #passcodeOverlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(6, 21, 23, 0.96);
+            background: rgba(5, 19, 21, 0.96);
             backdrop-filter: blur(25px);
             z-index: 1000;
             display: flex;
@@ -55,13 +55,13 @@
 
         .passcode-card {
             background: var(--mywebby-teal-card);
-            border: 1px solid rgba(240, 91, 40, 0.3);
-            border-radius: 20px;
+            border: 1px solid rgba(240, 91, 40, 0.35);
+            border-radius: 24px;
             padding: 2.5rem 2rem;
             max-width: 420px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
         }
 
         .passcode-input-wrapper {
@@ -74,7 +74,7 @@
         .passcode-input-wrapper input {
             width: 100%;
             padding: 0.85rem 3rem 0.85rem 1rem;
-            background: rgba(6, 21, 23, 0.7);
+            background: rgba(5, 19, 21, 0.7);
             border: 1px solid var(--card-border);
             border-radius: 12px;
             color: white;
@@ -104,7 +104,7 @@
         header {
             border-bottom: 1px solid var(--card-border);
             backdrop-filter: blur(16px);
-            background: rgba(6, 21, 23, 0.85);
+            background: rgba(5, 19, 21, 0.85);
             position: sticky;
             top: 0;
             z-index: 50;
@@ -124,121 +124,141 @@
 
         .brand-subtitle {
             color: var(--mywebby-orange); font-weight: 600; font-size: 0.85rem;
-            background: rgba(240, 91, 40, 0.1); padding: 0.25rem 0.65rem;
-            border-radius: 6px; border: 1px solid rgba(240, 91, 40, 0.2);
+            background: rgba(240, 91, 40, 0.12); padding: 0.25rem 0.65rem;
+            border-radius: 6px; border: 1px solid rgba(240, 91, 40, 0.25);
         }
 
         .badge-render {
             background: rgba(16, 185, 129, 0.12);
             border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #34D399; padding: 0.3rem 0.85rem; border-radius: 9999px;
+            color: #34D399; padding: 0.35rem 0.9rem; border-radius: 9999px;
             font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.45rem;
         }
         .badge-pulse { width: 8px; height: 8px; background-color: #10B981; border-radius: 50%; box-shadow: 0 0 8px #10B981; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(0.95); } 70% { transform: scale(1); } 100% { transform: scale(0.95); } }
+        @keyframes pulse { 0% { transform: scale(0.95); } 70% { transform: scale(1.05); } 100% { transform: scale(0.95); } }
 
         main { flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; padding: 2.5rem 1.5rem; }
 
         .hero { text-align: center; margin-bottom: 2.5rem; }
-        .hero h1 { font-family: 'Outfit', sans-serif; font-size: 2.6rem; font-weight: 700; margin-bottom: 0.75rem; color: #FFFFFF; }
-        .hero p { color: var(--text-muted); font-size: 1.05rem; max-width: 680px; margin: 0 auto; }
+        .hero h1 { font-family: 'Outfit', sans-serif; font-size: 2.7rem; font-weight: 800; margin-bottom: 0.75rem; color: #FFFFFF; letter-spacing: -0.5px; }
+        .hero p { color: var(--text-muted); font-size: 1.05rem; max-width: 680px; margin: 0 auto; line-height: 1.6; }
 
-        .tabs-container { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .tabs-container { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2rem; }
         .tab-btn {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border);
-            color: var(--text-muted); padding: 0.75rem 1.25rem; border-radius: 12px;
-            font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: all 0.25s ease;
-            display: flex; align-items: center; gap: 0.55rem;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--card-border);
+            color: var(--text-muted); padding: 0.85rem 1.4rem; border-radius: 14px;
+            font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.25s ease;
+            display: flex; align-items: center; gap: 0.6rem;
         }
         .tab-btn i { width: 18px; height: 18px; }
-        .tab-btn:hover { background: rgba(255, 255, 255, 0.07); color: var(--text-main); }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.08); color: var(--text-main); transform: translateY(-1px); }
         .tab-btn.active {
-            background: rgba(240, 91, 40, 0.15); border-color: var(--mywebby-orange);
-            color: white; box-shadow: 0 4px 20px var(--mywebby-orange-glow);
+            background: rgba(240, 91, 40, 0.18); border-color: var(--mywebby-orange);
+            color: white; box-shadow: 0 4px 25px var(--mywebby-orange-glow);
         }
 
         .workspace-card {
-            background: var(--mywebby-teal-card); border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px; backdrop-filter: blur(20px); padding: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); margin-bottom: 3rem;
+            background: var(--mywebby-teal-card); border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px; backdrop-filter: blur(20px); padding: 2.25rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); margin-bottom: 3rem;
         }
 
         .dropzone {
-            border: 2px dashed rgba(240, 91, 40, 0.35); border-radius: 16px;
+            border: 2px dashed rgba(240, 91, 40, 0.4); border-radius: 20px;
             padding: 3.5rem 2rem; text-align: center; cursor: pointer;
-            transition: all 0.3s ease; background: rgba(240, 91, 40, 0.03); position: relative;
+            transition: all 0.3s ease; background: rgba(240, 91, 40, 0.04); position: relative;
         }
-        .dropzone:hover, .dropzone.dragover { border-color: var(--mywebby-orange); background: rgba(240, 91, 40, 0.08); transform: translateY(-2px); }
+        .dropzone:hover, .dropzone.dragover { border-color: var(--mywebby-orange); background: rgba(240, 91, 40, 0.09); transform: translateY(-2px); box-shadow: 0 10px 30px var(--mywebby-orange-glow); }
         .dropzone-icon {
             display: inline-flex; align-items: center; justify-content: center;
-            width: 64px; height: 64px; background: rgba(240, 91, 40, 0.12);
+            width: 68px; height: 68px; background: rgba(240, 91, 40, 0.15);
             color: var(--mywebby-orange); border-radius: 50%; margin-bottom: 1rem;
+            box-shadow: 0 0 20px var(--mywebby-orange-glow);
         }
-        .dropzone-icon i { width: 32px; height: 32px; }
+        .dropzone-icon i { width: 34px; height: 34px; }
         .file-input { display: none; }
 
-        .tool-panel { display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border); }
-        .tool-panel.active { display: block; animation: fadeIn 0.3s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tool-panel { display: none; margin-top: 1.75rem; padding-top: 1.75rem; border-top: 1px solid var(--card-border); }
+        .tool-panel.active { display: block; animation: fadeIn 0.35s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
         .form-group { margin-bottom: 1.25rem; }
         .form-label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: #D1D5DB; }
         .form-control {
-            width: 100%; padding: 0.75rem 1rem; background: rgba(6, 21, 23, 0.6);
-            border: 1px solid var(--card-border); border-radius: 10px; color: white;
+            width: 100%; padding: 0.85rem 1rem; background: rgba(5, 19, 21, 0.7);
+            border: 1px solid var(--card-border); border-radius: 12px; color: white;
             font-size: 0.95rem; outline: none; transition: border-color 0.2s ease;
         }
         .form-control:focus { border-color: var(--mywebby-orange); }
 
         .btn-action {
-            width: 100%; padding: 1rem; background: var(--mywebby-orange);
-            border: none; border-radius: 12px; color: white; font-weight: 700;
+            width: 100%; padding: 1.1rem; background: var(--mywebby-orange);
+            border: none; border-radius: 14px; color: white; font-weight: 700;
             font-size: 1.05rem; cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--mywebby-orange-glow);
-            display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+            box-shadow: 0 6px 20px var(--mywebby-orange-glow);
+            display: flex; align-items: center; justify-content: center; gap: 0.65rem;
         }
         .btn-action i { width: 20px; height: 20px; }
-        .btn-action:hover { background: var(--mywebby-orange-hover); transform: translateY(-2px); box-shadow: 0 6px 25px var(--mywebby-orange-glow); }
+        .btn-action:hover { background: var(--mywebby-orange-hover); transform: translateY(-2px); box-shadow: 0 8px 30px var(--mywebby-orange-glow); }
         .btn-action:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        /* LIVE MOCKUPS STYLING */
+        /* REALISTIC MOCKUPS STYLING */
         .mockups-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.25rem; margin-top: 1.5rem; margin-bottom: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem; margin-top: 1.5rem; margin-bottom: 1.5rem;
         }
         .mockup-card {
-            background: rgba(6, 21, 23, 0.6); border: 1px solid var(--card-border);
-            border-radius: 14px; padding: 1.25rem; text-align: center;
+            background: rgba(5, 19, 21, 0.75); border: 1px solid var(--card-border);
+            border-radius: 18px; padding: 1.5rem; text-align: center;
         }
-        .mockup-card h5 { font-size: 0.95rem; color: #D1D5DB; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+        .mockup-card h5 { font-size: 0.95rem; color: #D1D5DB; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.45rem; font-weight: 700; }
+        
+        /* CHROME BROWSER WINDOW MOCKUP */
+        .browser-window-mockup {
+            background: #1e293b; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); max-width: 250px; margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .browser-top-dots { display: flex; gap: 6px; padding: 0.5rem 0.75rem; background: #0f172a; }
+        .dot { width: 9px; height: 9px; border-radius: 50%; }
+        .dot-red { background: #ef4444; } .dot-yellow { background: #f59e0b; } .dot-green { background: #10b981; }
         .browser-tab-preview {
-            background: #1e293b; border-radius: 8px 8px 0 0; padding: 0.5rem 0.85rem;
-            display: flex; align-items: center; gap: 0.5rem; max-width: 220px; margin: 0 auto;
+            background: #1e293b; padding: 0.5rem 0.85rem;
+            display: flex; align-items: center; gap: 0.55rem; border-bottom: 1px solid #334155;
         }
         .browser-tab-preview img { width: 18px; height: 18px; border-radius: 3px; object-fit: contain; }
-        .browser-tab-preview span { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
-        .phone-icon-preview {
-            width: 64px; height: 64px; border-radius: 14px; background: #0284c7;
-            margin: 0 auto; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3); overflow: hidden;
+        .browser-tab-preview span { font-size: 0.78rem; color: #cbd5e1; font-weight: 600; }
+
+        /* PHONE SCREEN MOCKUP */
+        .phone-screen-mockup {
+            width: 140px; height: 100px; border-radius: 18px; background: linear-gradient(135deg, #0284c7, #0f172a);
+            margin: 0 auto; padding: 0.85rem; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.4rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.15);
         }
-        .phone-icon-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .app-icon-box {
+            width: 54px; height: 54px; border-radius: 13px; background: #ffffff;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        .app-icon-box img { width: 100%; height: 100%; object-fit: cover; }
+        .app-label { font-size: 0.7rem; color: white; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
 
         .code-box {
-            background: rgba(6, 21, 23, 0.9); border: 1px solid var(--card-border);
-            border-radius: 12px; padding: 1rem; font-family: monospace; font-size: 0.82rem;
-            color: #38bdf8; overflow-x: auto; text-align: left; position: relative;
+            background: rgba(5, 19, 21, 0.95); border: 1px solid var(--card-border);
+            border-radius: 14px; padding: 1.1rem; font-family: monospace; font-size: 0.82rem;
+            color: #38bdf8; overflow-x: auto; text-align: left; position: relative; line-height: 1.6;
         }
         .btn-copy {
-            position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(240, 91, 40, 0.2);
-            border: 1px solid var(--mywebby-orange); color: white; padding: 0.3rem 0.6rem;
-            border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600;
+            position: absolute; top: 0.6rem; right: 0.6rem; background: rgba(240, 91, 40, 0.2);
+            border: 1px solid var(--mywebby-orange); color: white; padding: 0.35rem 0.75rem;
+            border-radius: 8px; font-size: 0.75rem; cursor: pointer; font-weight: 600; transition: all 0.2s ease;
         }
+        .btn-copy:hover { background: var(--mywebby-orange); }
 
-        .result-box { display: none; margin-top: 1.5rem; padding: 1.5rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; text-align: center; }
-        .result-box.active { display: block; animation: fadeIn 0.3s ease forwards; }
+        .result-box { display: none; margin-top: 1.75rem; padding: 1.75rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 20px; text-align: center; }
+        .result-box.active { display: block; animation: fadeIn 0.35s ease forwards; }
 
-        footer { border-top: 1px solid var(--card-border); text-align: center; padding: 1.75rem 1.5rem; color: var(--text-muted); font-size: 0.88rem; background: rgba(6, 21, 23, 0.9); }
+        footer { border-top: 1px solid var(--card-border); text-align: center; padding: 1.75rem 1.5rem; color: var(--text-muted); font-size: 0.88rem; background: rgba(5, 19, 21, 0.9); }
     </style>
 </head>
 <body>
@@ -246,11 +266,11 @@
     <!-- VIP GATEKEEPER PASSCODE OVERLAY -->
     <div id="passcodeOverlay">
         <div class="passcode-card">
-            <div style="background: rgba(240, 91, 40, 0.15); width: 64px; height: 64px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: var(--mywebby-orange);">
-                <i data-lucide="lock" style="width: 32px; height: 32px;"></i>
+            <div style="background: rgba(240, 91, 40, 0.15); width: 68px; height: 68px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--mywebby-orange); box-shadow: 0 0 20px var(--mywebby-orange-glow);">
+                <i data-lucide="lock" style="width: 34px; height: 34px;"></i>
             </div>
-            <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 0.5rem;">Area Riservata Agency</h2>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">Inserisci il Passcode MyWebby per accedere alla suite privata.</p>
+            <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.55rem; margin-bottom: 0.5rem; color: #FFFFFF;">Area Riservata Agency</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Inserisci il Passcode MyWebby per accedere alla suite privata.</p>
             <form onsubmit="checkPasscode(event)">
                 <div class="passcode-input-wrapper">
                     <input type="password" id="passcodeInput" placeholder="Inserisci Passcode..." required oninput="document.getElementById('passcodeError').style.display='none'">
@@ -262,7 +282,7 @@
                     <i data-lucide="key-round"></i> Sblocca Suite Riservata
                 </button>
             </form>
-            <p id="passcodeError" style="color: #EF4444; font-size: 0.85rem; margin-top: 0.75rem; display: none;">Passcode errato. Riprova!</p>
+            <p id="passcodeError" style="color: #EF4444; font-size: 0.88rem; margin-top: 0.85rem; display: none; font-weight: 600;">Passcode errato. Riprova!</p>
         </div>
     </div>
 
@@ -282,7 +302,7 @@
     <main>
         <section class="hero">
             <h1>Suite Riservata Strumenti Media & Favicon</h1>
-            <p>Genera pacchetti Favicon PRO con anteprime live, converti immagini iPhone HEIC in WebP e ottimizza le risorse dei tuoi siti.</p>
+            <p>Genera pacchetti Favicon PRO con anteprime live su dispositivi, converti immagini iPhone HEIC in WebP e ottimizza i siti dei tuoi clienti.</p>
         </section>
 
         <!-- Tool Selection Tabs -->
@@ -301,8 +321,8 @@
                 <div class="dropzone-icon">
                     <i data-lucide="upload-cloud"></i>
                 </div>
-                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;" id="dropzoneTitle">Trascina qui il logo o l'immagine aziendale</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">oppure clicca per selezionare dal computer</p>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem; font-family: 'Outfit', sans-serif;" id="dropzoneTitle">Trascina qui il logo o l'immagine aziendale</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">oppure clicca per selezionare dal computer</p>
                 <input type="file" id="fileInput" class="file-input" accept="image/*,.heic" multiple onchange="handleFileSelect(event)">
             </div>
 
@@ -311,8 +331,8 @@
 
             <!-- 1. FAVICON GENERATOR PANEL -->
             <div class="tool-panel active" id="panel-favicon">
-                <div style="background: rgba(240, 91, 40, 0.08); border: 1px solid rgba(240, 91, 40, 0.25); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
-                    <h4 style="font-size: 1rem; color: #FFFFFF; font-weight: 700; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                <div style="background: rgba(240, 91, 40, 0.08); border: 1px solid rgba(240, 91, 40, 0.25); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1rem; color: #FFFFFF; font-weight: 700; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.55rem;">
                         <i data-lucide="eye" style="color: var(--mywebby-orange); width: 20px; height: 20px;"></i> Anteprima Live Mockup su Dispositivi
                     </h4>
                     <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">
@@ -324,15 +344,25 @@
                 <div class="mockups-grid">
                     <div class="mockup-card">
                         <h5><i data-lucide="globe"></i> Scheda Browser Chrome</h5>
-                        <div class="browser-tab-preview">
-                            <img id="prevFavicon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='%23F05B28'><circle cx='12' cy='12' r='10'/></svg>">
-                            <span>Sito Cliente - MyWebby</span>
+                        <div class="browser-window-mockup">
+                            <div class="browser-top-dots">
+                                <div class="dot dot-red"></div>
+                                <div class="dot dot-yellow"></div>
+                                <div class="dot dot-green"></div>
+                            </div>
+                            <div class="browser-tab-preview">
+                                <img id="prevFavicon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='%23F05B28'><circle cx='12' cy='12' r='10'/></svg>">
+                                <span>Sito Cliente - MyWebby</span>
+                            </div>
                         </div>
                     </div>
                     <div class="mockup-card">
                         <h5><i data-lucide="smartphone"></i> Icona App iOS / Android</h5>
-                        <div class="phone-icon-preview">
-                            <img id="prevAppIcon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%23F05B28'><circle cx='12' cy='12' r='10'/></svg>">
+                        <div class="phone-screen-mockup">
+                            <div class="app-icon-box">
+                                <img id="prevAppIcon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='54' height='54' viewBox='0 0 24 24' fill='%23F05B28'><circle cx='12' cy='12' r='10'/></svg>">
+                            </div>
+                            <span class="app-label">MyWebby</span>
                         </div>
                     </div>
                 </div>
@@ -358,7 +388,7 @@
 
             <!-- 2. IMAGE RESIZER & HEIC CONVERTER PANEL -->
             <div class="tool-panel" id="panel-resizer">
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;" class="form-group">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem;" class="form-group">
                     <div>
                         <label class="form-label">Larghezza Max (px):</label>
                         <select id="resizeWidth" class="form-control">
@@ -393,10 +423,10 @@
 
             <!-- RESULT BOX -->
             <div class="result-box" id="resultBox">
-                <i data-lucide="check-circle" style="width: 48px; height: 48px; color: #10B981; margin-bottom: 0.5rem;"></i>
-                <h3 style="font-size: 1.25rem;">Pacchetto Pronto per il Download!</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;" id="resultMessage"></p>
-                <a href="#" id="downloadLink" class="btn-download" style="background: #10B981; color: white; padding: 0.85rem 1.75rem; border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem;" download>
+                <i data-lucide="check-circle" style="width: 52px; height: 52px; color: #10B981; margin-bottom: 0.5rem;"></i>
+                <h3 style="font-size: 1.3rem; font-family: 'Outfit', sans-serif;">Pacchetto Pronto per il Download!</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.3rem;" id="resultMessage"></p>
+                <a href="#" id="downloadLink" class="btn-download" style="background: #10B981; color: white; padding: 0.9rem 1.85rem; border-radius: 14px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.25rem; box-shadow: 0 6px 20px rgba(16,185,129,0.3);" download>
                     <i data-lucide="download"></i> Scarica Archivio ZIP
                 </a>
             </div>
@@ -479,10 +509,10 @@
             selectedFiles.forEach((file, idx) => {
                 const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
                 listEl.innerHTML += `
-                    <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(6, 21, 23, 0.5); border: 1px solid var(--card-border); padding: 0.75rem 1rem; border-radius: 10px;">
-                        <div style="display: flex; align-items: center; gap: 0.6rem;">
-                            <i data-lucide="image" style="color: var(--mywebby-orange); width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 600; font-size: 0.9rem;">${file.name} (${sizeMb} MB)</span>
+                    <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(5, 19, 21, 0.6); border: 1px solid var(--card-border); padding: 0.85rem 1.1rem; border-radius: 12px;">
+                        <div style="display: flex; align-items: center; gap: 0.65rem;">
+                            <i data-lucide="image" style="color: var(--mywebby-orange); width: 22px; height: 22px;"></i>
+                            <span style="font-weight: 600; font-size: 0.92rem;">${file.name} (${sizeMb} MB)</span>
                         </div>
                         <button style="background: transparent; border: none; color: #EF4444; cursor: pointer;" onclick="removeFile(${idx})"><i data-lucide="trash-2"></i></button>
                     </div>
@@ -515,9 +545,7 @@
 
         function showLoading(tool, isLoading) {
             const btn = document.getElementById(`btn-${tool}`);
-            const spinner = document.getElementById(`spinner-${tool}`);
             btn.disabled = isLoading;
-            spinner.style.display = isLoading ? 'inline-block' : 'none';
         }
 
         function copyHtmlCode() {
